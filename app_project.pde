@@ -9,42 +9,61 @@ color blue = #0000FF;
 color orange = #FCD224;
 color purple = #BB24FC;
 color yellow = #FFF700;
+color brown = #BC8517;
 
 color grey = #98988A;
 
 color selected; // changes color
 
+int change = -1;
+float slideY;
+
 void setup() {
- size(900,900); 
- background(white);
+  size(900, 900);
+  background(white);
 }
 
 void draw() {
- 
- toolbar(0,0,0);
- 
+  println(mouseX, mouseY);
+
+  toolbar(0, 700,100);
+
+  if (change > 0) {
+    pallette(450, 450);
+  }
 }
 
 void mouseDragged() {
   fill(selected);
- line(pmouseX,pmouseY,mouseX,mouseY); 
+  line(pmouseX, pmouseY, mouseX, mouseY);
 }
 
+void toolbar(int x, int y, int r) {
 
-void toolbar(int x, int y, int anchor) {
+  fill(black);
+  stroke(black);
+  rect(0, 700, 900, 300);
   
- pushMatrix();
- translate(x,y);
- fill(grey);
- stroke(grey);
- rect(anchor,600,900,600); // toolbar 
- rect(anchor + 440,560,70,50);
- 
- button(600,600);
- 
- popMatrix();
+  //slider
+  strokeWeight(5);
+  stroke(white);
+  fill(white);
+  line(60,720,60,880);
+  circle(60,800,25);
+  
+  //slider indicator
+  circle(150, 800, r);
 }
 
-void button (int x, int y) {
-  circle(50,50,50);
+void pallette (int x, int y) {
+  circle(450, 450, 50);
+}
+
+void mouseReleased () {
+
+  if (dist(150, 800, mouseX, mouseY) < 50) {
+    change = change * -1;
+  }
+  
+  if (mouseX >40 && mouseX < 80 && mouseY > 
 }
