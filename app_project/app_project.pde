@@ -1,8 +1,10 @@
 //Marcus Dha
 //2-1
 
-PImage overwatch;
+PImage dollar;
+PImage xStamp;
 boolean stampOn; //true or false
+boolean stampOn1;
 
 color black = #000000;
 color white = #FFFFFF;
@@ -31,8 +33,10 @@ void setup() {
   selected = black;
   slideY = 800;
   r = 50;
-  overwatch = loadImage("overwatch1.png");
-  stampOn = true;
+  dollar = loadImage("dollar.png");
+  xStamp = loadImage("x.png");
+  stampOn = false;
+  stampOn1 = false;
 }
 
 void draw() {
@@ -47,8 +51,8 @@ void draw() {
 
 
   r = map(slideY, 710, 880, 1, 100);
-  w = map(slideY, 710,880, 1, 200);
-  h = map(slideY, 710,880, 1, 200);
+  w = map(slideY, 710, 880, 1, 200);
+  h = map(slideY, 710, 880, 1, 200);
 }
 
 
@@ -88,9 +92,16 @@ void toolbar(int x, int y) {
   buttonfunc(470, 830, 40, black);
 
   //stamp button
-  fill(yellow);
-  rect(610, 745, 100, 100);
-  image(overwatch, 610, 745, 100, 100);
+  rectButton(610, 710, 80, 80, dGrey);
+  image(dollar, 610, 710, 80, 80);
+
+  rectButton(610, 810, 80, 80, dGrey);
+  image(xStamp, 610, 810, 80, 80);
+
+  //new button
+  rectButton(750, 710, 120, 50, dGrey);
+  fill(white);
+  text("NEW", 750, 740);
 }
 
 void pallette (int x, int y) {
@@ -116,6 +127,21 @@ void tactile (int x, int y, int r) {
   }
 }
 
+void rectButton (int x, int y, int w, int h, color variable) {
+  strokeWeight(3);
+  fill(variable);
+  rectTact(x, y, w, h);
+  rect(x, y, w, h);
+}
+
+void rectTact (int x, int y, int w, int h) {
+  if (mouseX > x && mouseX < x+w && mouseY > y && mouseY < y+h) {
+    stroke(white);
+  } else {
+    stroke(grey);
+  }
+}
+
 void mouseReleased () {
 
 
@@ -125,31 +151,54 @@ void mouseReleased () {
 
   if (dist(290, 755, mouseX, mouseY) < 20) {
     selected = yellow;
+    stampOn = false;
   }
 
   if (dist(350, 755, mouseX, mouseY) < 20) {
     selected = red;
+    stampOn = false;
   }
 
   if (dist(410, 755, mouseX, mouseY) < 20) {
     selected = blue;
+    stampOn = false;
   }
 
   if (dist(470, 755, mouseX, mouseY) < 20) {
     selected = white;
+    stampOn = false;
   }
 
   if (dist(290, 830, mouseX, mouseY) < 20) {
     selected = green;
+    stampOn = false;
   }
   if (dist(350, 830, mouseX, mouseY) < 20) {
     selected = purple;
+    stampOn = false;
   }
   if (dist(410, 830, mouseX, mouseY) < 20) {
     selected = orange;
+    stampOn = false;
   }
   if (dist(470, 830, mouseX, mouseY) < 20) {
     selected = black;
+    stampOn = false;
+  }
+  //activates stamp
+  if (mouseX > 610 && mouseX < 690 && mouseY > 710 && mouseX < 790) {
+    stampOn = !stampOn;
+  }
+
+  if (mouseX > 610 && mouseX < 710 && mouseY > 810 && mouseX < 890) {
+    stampOn = false;
+    stampOn1 = !stampOn1;
+  }
+
+  //activates new canvas
+  if (mouseX > 750 && mouseX < 870 && mouseY > 710 && mouseY < 760) {
+    fill(white);
+    rect(0, 0, 900, 700);
   }
 }
 
@@ -161,7 +210,7 @@ void mouseDragged() {
     stroke(selected);
     line(pmouseX, pmouseY, mouseX, mouseY);
   } else {
-    image(overwatch, mouseX, mouseY, w, h);
+    image(dollar, mouseX, mouseY, w, h);
   }
 
   if (mouseX >40 && mouseX < 80 && mouseY > 710 && mouseY < 880) {
