@@ -64,8 +64,7 @@ void toolbar(int x, int y) {
   rect(0, 700, 900, 300);
 
   //slider
-  fill(dGrey);
-  rect(35, 710, 52, 180);
+  rectButton(35, 710, 52, 180, dGrey);
   strokeWeight(5);
   stroke(white);
   fill(white);
@@ -101,7 +100,17 @@ void toolbar(int x, int y) {
   //new button
   rectButton(750, 710, 120, 50, dGrey);
   fill(white);
-  text("NEW", 750, 740);
+  text("CLEAR CANVAS", 770, 740);
+
+  //save button
+  rectButton(750, 780, 120, 50, dGrey);
+  fill(white);
+  text("SAVE CANVAS", 770, 810);
+
+  //input button
+  rectButton(750, 850, 120, 900, dGrey);
+  fill(white);
+  text("LOAD IMAGE", 770, 880);
 }
 
 void pallette (int x, int y) {
@@ -142,6 +151,24 @@ void rectTact (int x, int y, int w, int h) {
   }
 }
 
+void mouseDragged() {
+
+  if (stampOn) {
+    image(dollar, mouseX, mouseY, w, h);
+  } else if (stampOn1) {
+    image(xStamp, mouseX, mouseY, w, h);
+  } else {
+    fill(black);
+    strokeWeight(r);
+    stroke(selected);
+    line(pmouseX, pmouseY, mouseX, mouseY);
+  }
+
+
+  if (mouseX >40 && mouseX < 80 && mouseY > 710 && mouseY < 880) {
+    slideY = mouseY;
+  }
+}
 void mouseReleased () {
 
 
@@ -151,39 +178,39 @@ void mouseReleased () {
 
   if (dist(290, 755, mouseX, mouseY) < 20) {
     selected = yellow;
-    stampOn = false;
+    stampFalse();
   }
 
   if (dist(350, 755, mouseX, mouseY) < 20) {
     selected = red;
-    stampOn = false;
+    stampFalse();
   }
 
   if (dist(410, 755, mouseX, mouseY) < 20) {
     selected = blue;
-    stampOn = false;
+    stampFalse();
   }
 
   if (dist(470, 755, mouseX, mouseY) < 20) {
     selected = white;
-    stampOn = false;
+    stampFalse();
   }
 
   if (dist(290, 830, mouseX, mouseY) < 20) {
     selected = green;
-    stampOn = false;
+    stampFalse();
   }
   if (dist(350, 830, mouseX, mouseY) < 20) {
     selected = purple;
-    stampOn = false;
+    stampFalse();
   }
   if (dist(410, 830, mouseX, mouseY) < 20) {
     selected = orange;
-    stampOn = false;
+    stampFalse();
   }
   if (dist(470, 830, mouseX, mouseY) < 20) {
     selected = black;
-    stampOn = false;
+    stampFalse();
   }
   //activates stamp
   if (mouseX > 610 && mouseX < 690 && mouseY > 710 && mouseX < 790) {
@@ -191,8 +218,7 @@ void mouseReleased () {
   }
 
   if (mouseX > 610 && mouseX < 710 && mouseY > 810 && mouseX < 890) {
-    stampOn = false;
-    stampOn1 = !stampOn1;
+    stampOn1 = true;
   }
 
   //activates new canvas
@@ -200,20 +226,38 @@ void mouseReleased () {
     fill(white);
     rect(0, 0, 900, 700);
   }
+
+  //saves canvas
+  if (mouseX > 750 && mouseX < 870 && mouseY > 780 && mouseY < 830) {
+    selectOutput("Choose a name for your image file", "saveImage");
+  }
+
+  //input canvas
+  if (mouseX > 750 && mouseX < 870 && mouseY > 850 && mouseY < 900) {
+    selectInput("Choose an image to load", "openImage");
+  }
 }
 
-void mouseDragged() {
 
-  if (stampOn == false) {
-    fill(black);
-    strokeWeight(r);
-    stroke(selected);
-    line(pmouseX, pmouseY, mouseX, mouseY);
-  } else {
-    image(dollar, mouseX, mouseY, w, h);
+void saveImage (File f) {
+  if (f != null) {
+    PImage canvas = get(0, 0, 900, 700);
+    canvas.save(f.getAbsolutePath());
   }
+}
 
-  if (mouseX >40 && mouseX < 80 && mouseY > 710 && mouseY < 880) {
-    slideY = mouseY;
+void openImage (File f) {
+  if (f != null) {
+    int n = 0;
+    while (n < 100) {
+      PImage picture = loadImage(f.getPath());
+      image(picture, 0, 0);
+      n = n + 1;
+    }
   }
+}
+
+void stampFalse () {
+  stampOn1 = false;
+  stampOn = false;
 }
